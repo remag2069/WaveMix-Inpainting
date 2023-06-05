@@ -46,15 +46,15 @@ TrainDataPath=str(args.Data_Path)
 
 eval_loader=InpaintingDataset(datadir="/home/Drive3/Dharshan/Venv/lama/ImageNet/eval/random_medium_224/",img_suffix=".png")
 
-TrainDataLoaderConfig={'indir': TrainDataPath, 'out_size': 96, 'mask_gen_kwargs': {'irregular_proba': 1, 'irregular_kwargs': {'max_angle': 4, 'max_len': 50, 'max_width': 30, 'max_times': 5, 'min_times': 1}, 'box_proba': 1, 'box_kwargs': {'margin': 10, 'bbox_min_size': 15, 'bbox_max_size': 30, 'max_times': 4, 'min_times': 0}, 'segm_proba': 0}, 'transform_variant': 'distortions', 
-						'dataloader_kwargs': {'batch_size': TrainBatchSize, 'shuffle': False, 'num_workers': 2}}
+TrainDataLoaderConfig={'indir': TrainDataPath, 'out_size': 224, 'mask_gen_kwargs': {'irregular_proba': 1, 'irregular_kwargs': {'max_angle': 4, 'max_len': 50, 'max_width': 30, 'max_times': 5, 'min_times': 1}, 'box_proba': 1, 'box_kwargs': {'margin': 10, 'bbox_min_size': 15, 'bbox_max_size': 30, 'max_times': 4, 'min_times': 0}, 'segm_proba': 0}, 'transform_variant': 'distortions', 
+						'dataloader_kwargs': {'batch_size': TrainBatchSize, 'shuffle': True, 'num_workers': 2}}
 
 
 ### MODEL ARCHITECTURE ###
 
 # Module parameters
 BATCH_SIZE=64
-IMAGE_SIZE=(96,96)
+IMAGE_SIZE=(224,224)
 MASK_SIZE=12
 MODEL_DEPTH=7
 MODEL_EMBEDDING=128
@@ -85,7 +85,7 @@ extra="_thin_mask"
 TRAIN=True  # Train (T) or Evaluate (F)
 MAX_EVAL=10
 VAL_CYCLE=1 # every nth epoch it will validate
-
+EPOCHS=100
 
 if TRAIN:
 	train_loader=make_default_train_dataloader(**TrainDataLoaderConfig)
@@ -98,7 +98,7 @@ if TRAIN:
 	print("#### Performance before training:",calc_curr_performance(model,eval_loader))
 
 	start_time=time.time()
-	for epoch in range(20):
+	for epoch in range(EPOCHS):
 		start_index=np.random.randint(BATCH_SIZE)
 		t0 = time.time()
 		running_loss = 0.0
@@ -126,7 +126,7 @@ if TRAIN:
 		
 			# print statistics
 			running_loss += loss.detach().item()
-			if i % int(len(train_loader)/5000)==int(len(train_loader)/5000)-1:    
+			if i % int(len(train_loader)/50)==int(len(train_loader)/50)-1:    
 				print('[%d, %5d] loss: %.3f' %
 					  (epoch + 1, i + 1, running_loss))
 				
@@ -137,9 +137,9 @@ if TRAIN:
 					torch.save(model.state_dict(), PATH)
 					prev_loss=running_loss
 					print("saving chkpoint")
-					break
-
+					
 				running_loss = 0.0
+				break
 
 		if epoch%VAL_CYCLE==0:
 			num_images=min(TrainBatchSize, 3)
