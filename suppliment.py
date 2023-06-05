@@ -402,8 +402,6 @@ class Waveblock(nn.Module):
                 nn.GELU(),
                 nn.Dropout(dropout),
                 nn.Conv2d(final_dim*mult, ff_channel, 1),
-#                 nn.Dropout(dropout),
-#                 nn.ConvTranspose2d(ff_channel, final_dim, 4, stride=2, padding=1),
                 nn.BatchNorm2d(ff_channel)
             
             )
@@ -411,11 +409,7 @@ class Waveblock(nn.Module):
         self.reduction = nn.Conv2d(final_dim, int(final_dim/4), REDUCTION_CONV, padding=int(REDUCTION_CONV/2)).to(device) ## CHANGE to 4
         
         self.ff1 = nn.ConvTranspose2d(ff_channel, int(final_dim/NUM_DWT), 4, stride=2, padding=1)
-        # self.ff2 = nn.ConvTranspose2d(ff_channel, int(final_dim/NUM_DWT), 6, stride=4, padding=1)
-        # self.ff3 = nn.ConvTranspose2d(ff_channel, int(final_dim/NUM_DWT), 10, stride=8, padding=1)
-        
         self.depthconv = nn.Sequential(
-            
             nn.Conv2d(final_dim, final_dim, 5, groups=final_dim, padding=2),
             nn.GELU(),
             nn.BatchNorm2d(final_dim),
@@ -427,30 +421,13 @@ class Waveblock(nn.Module):
         x = self.reduction(x)
 
         xf1 = DWTForward(J=1, mode='zero', wave='db1').to(device)
-        # xf2 = DWTForward(J=2, mode='zero', wave='db1').to(device)
-        # xf3 = DWTForward(J=3, mode='zero', wave='db1').to(device)
 
         Y1, Yh = xf1(x)
-        # Y2, Yh = xf2(x)
-        # Y3, Yh = xf3(x)
-        
         x1 = torch.reshape(Yh[0], (b, int(c*3/4), int(h/2), int(h/2)))
-        # x2 = torch.reshape(Yh[1], (b, int(c*3/4), int(h/4), int(w/4)))
-        # x3 = torch.reshape(Yh[2], (b, int(c*3/4), int(h/8), int(w/8)))
-        
         x1 = torch.cat((Y1,x1), dim = 1)
-        # x2 = torch.cat((Y2,x2), dim = 1)
-        # x3 = torch.cat((Y3,x3), dim = 1)
-        
-#         print(x1.shape,x2.shape)
-        
-        x1 = self.feedforward(x1)
-        # x2 = self.feedforward(x2)
-        # x3 = self.feedforward(x3)
 
+        x1 = self.feedforward(x1)
         x1 = self.ff1(x1)
-        # x2 = self.ff2(x2)
-        # x3 = self.ff3(x3)
         
         if NUM_DWT==3:
             x = torch.cat((x1,x2,x3), dim = 1)
@@ -458,59 +435,10 @@ class Waveblock(nn.Module):
             x = torch.cat((x1,x2), dim = 1)
         elif NUM_DWT==1:
             x = x1
-        # print(x.shape)
         
         x = self.depthconv(x)
         
         return x
-
-# class WaveMix(nn.Module):
-#     def __init__(
-#         self,
-#         *,
-#         num_classes,
-#         depth,
-#         mult = 2,
-#         ff_channel = 16,
-#         final_dim = 16,
-#         dropout = 0.,
-#     ):
-#         super().__init__()
-        
-#         self.layers = nn.ModuleList([])
-#         for _ in range(depth):
-#             self.layers.append(Waveblock(mult = mult, ff_channel = ff_channel, final_dim = final_dim, dropout = dropout))
-        
-#         self.pool = nn.Sequential(
-#             nn.AdaptiveAvgPool2d(1),
-#             Rearrange('... () () -> ...'),
-#             nn.Linear(final_dim, num_classes)
-#         ).to(device)
-
-#         self.conv = nn.Sequential(
-#             nn.Conv2d(3, int(final_dim/2), 3, 1, 1),
-#             nn.Conv2d(int(final_dim/2), final_dim, 3, 1, 1)
-#         ).to(device)
-
-      
-
-#     def forward(self, img):
-#         x = self.conv(img)   
-            
-#         for attn in self.layers:
-#             x = attn(x) + x
-
-#         out = self.pool(x)
-
-#         return out
-
-
-
-
-##################################################################
-
-# model.to_device(cuda0)
-
 
 ### MODEL ###
 
@@ -535,10 +463,7 @@ class WaveMix(nn.Module):
 
         self.decoder = nn.Sequential(
             nn.ConvTranspose2d(final_dim*2,int(final_dim/2), 4, stride=2, padding=1),
-            # nn.ConvTranspose2d(int(final_dim/2),int(final_dim/4), 4, stride=2, padding=1),
-            # nn.ConvTranspose2d(int(final_dim/4),int(final_dim/8), 4, stride=2, padding=1),
             nn.ConvTranspose2d(int(final_dim/2), int(final_dim/2), 3, stride=1, padding=1),
-            # nn.Conv2d(num_classes*2, num_classes, 1)
             nn.BatchNorm2d(int(final_dim/2))
         )
 
@@ -548,46 +473,32 @@ class WaveMix(nn.Module):
         
         self.conv = nn.Sequential(
             nn.Conv2d(5, int(final_dim/2), 3, 1, 1),
-            # nn.Conv2d(int(final_dim/8), int(final_dim/4), 3, 2, 1),
-            # nn.Conv2d(int(final_dim/4),int(final_dim/2), 3, 2, 1),
             nn.Conv2d(int(final_dim/2), final_dim, 3, 2, 1),
-#             nn.BatchNorm2d(48)
         )
         
 
     def forward(self, img, mask):
         global device
-        # print(device,"##")
-#         self.mask=mask
+
         ones = torch.ones(img.size(0), 1, img.size(2), img.size(3))
         size_img=img.shape[2]
-#         mask=self.mask.repeat([img.size(0),1,1,1])
+
         if img.is_cuda:
             ones = ones.to(device)
             mask = mask.to(device)
-        # conv branch
-        # print(img.shape, ones.shape, mask.shape)
+
         mask=mask.reshape(-1,1,size_img,size_img)
         xnow = torch.cat([img, ones, mask], dim=1)
-#         print(xnow.shape)
         x = self.conv(xnow)   
         first_conv=x
 
-        # for conv,attn in self.layers:    ##CHANGE
         for attn in self.layers:
-            # x= conv(x)+x
             x = attn(x)+x
 
-        x=torch.cat([x,first_conv],dim=1)
-        # print("_____",x.shape)
-        
+        x=torch.cat([x,first_conv],dim=1)  # skip connection
         x = self.decoder(x)
-        # print(x.shape, first_conv.shape)
-        x=torch.cat([x,img],dim=1)
-
+        x=torch.cat([x,img],dim=1)  # skip connection
         out=self.decoder2(x)
-
-        # out = F.sigmoid(out)
 
         return out
 
@@ -639,25 +550,20 @@ def EvalMetrics(out,gt):
     ssim=[]
     l1=[]
     l2=[]
-    # lpips=[]
-    # print(out.shape,gt.shape3)
     size_img=gt.shape[2]
     gt=gt.reshape(-1,3,size_img,size_img)
     for x,y in zip(out,gt):
-    	# print(x.shape,y.shape)
     	psnr.append(psnr_eval(y.numpy(),x.numpy()))
     	ssim.append(ssim_eval(y.permute([1,2,0]).numpy(),x.permute([1,2,0]).numpy(),multichannel=True,data_range=255))
     	x=x*1.0
     	y=y*1.0
     	l1.append(nn.L1Loss()(y,x))
     	l2.append(nn.MSELoss()(y,x))
-    	# lpips.append(loss_fn(y.to(device),x.to(device)).mean())
     
     losses["L1"]=np.array(l1).mean()
     losses["L2"]=np.array(l2).mean()
     losses["PSNR"]=np.array(psnr).mean()
     losses["SSIM"]=np.array(ssim).mean()
-    # print(lpips)
     losses["LPIPS"]=loss_fn(gt.to(device),out.to(device)).mean()
 
     return losses
@@ -682,10 +588,8 @@ def calc_curr_performance(model,valloader):
         img, mask=torch.Tensor(data["image"]),torch.Tensor(data["mask"])
         size_img=img.shape[2]
         ground_truth=img.clone().detach()
-        # print(ground_truth.shape)
         img[:, :, :] = img[:, :, :] * mask
         masked_img=img
-        # print(ground_truth.max())
 
         out=model.forward((masked_img.reshape(-1,3,size_img,size_img)).to(device), mask.to(device))
         losses=EvalMetrics(out.cpu().detach(),ground_truth)
