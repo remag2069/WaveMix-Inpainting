@@ -7,7 +7,7 @@
 
 ### Model Architecture 
 
-![image](https://user-images.githubusercontent.com/15833382/226090639-b4571494-7d2d-4bcb-81e3-127916339dfe.png)
+![image](https://github.com/remag2069/WaveMix-Inpainting/blob/main/resources/model.png)
 
 Image inpainting refers to the synthesis of missing regions in an image, which can help restore occluded or degraded areas and also serve as a precursor task for self-supervision. The current state-of-the-art models for image inpainting are computationally heavy as they are based on vision transformer backbones in adversarial or diffusion settings. This paper diverges from vision transformers by using a computationally-efficient WaveMix-based fully convolutional architecture, which uses a 2D-discrete wavelet transform (DWT) for spatial and multi-resolution token-mixing along with convolutional layers. The proposed model outperforms the current-state-of-the-art models for large mask inpainting on reconstruction quality while also using less than half the parameter count and considerably lower training and evaluation times. 
 
