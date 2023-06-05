@@ -47,20 +47,23 @@ TrainDataPath=str(args.Data_Path)
 eval_loader=InpaintingDataset(datadir="/home/Drive3/Dharshan/Venv/lama/ImageNet/eval/random_medium_224/",img_suffix=".png")
 
 TrainDataLoaderConfig={'indir': TrainDataPath, 'out_size': 96, 'mask_gen_kwargs': {'irregular_proba': 1, 'irregular_kwargs': {'max_angle': 4, 'max_len': 50, 'max_width': 30, 'max_times': 5, 'min_times': 1}, 'box_proba': 1, 'box_kwargs': {'margin': 10, 'bbox_min_size': 15, 'bbox_max_size': 30, 'max_times': 4, 'min_times': 0}, 'segm_proba': 0}, 'transform_variant': 'distortions', 
-						'dataloader_kwargs': {'batch_size': TrainBatchSize, 'shuffle': True, 'num_workers': 2}}
+						'dataloader_kwargs': {'batch_size': TrainBatchSize, 'shuffle': False, 'num_workers': 2}}
 
 
 ### MODEL ARCHITECTURE ###
 
+# Module parameters
 BATCH_SIZE=64
 IMAGE_SIZE=(96,96)
 MASK_SIZE=12
-MODEL_DEPTH=7 #16
-MODEL_EMBEDDING=128 #256
-NUM_MODELS=4
+MODEL_DEPTH=7
+MODEL_EMBEDDING=128
 FF_CHANNEL=128
 REDUCTION_CONV=1
-NUM_DWT=1 
+NUM_DWT=1
+
+
+NUM_MODELS=4 # number of models not modules
 
 
 model = Model(
@@ -68,7 +71,7 @@ model = Model(
 	depth = MODEL_DEPTH,
 	mult = 2,
 	ff_channel = FF_CHANNEL,
-	final_dim = MODEL_EMBEDDING, ## 64
+	final_dim = MODEL_EMBEDDING,
 	dropout = 0.5,
 	num_models=NUM_MODELS
 ).to(device)
@@ -79,7 +82,7 @@ base_path="WavemixModels"
 extra="_thin_mask"
 
 
-TRAIN=True
+TRAIN=True  # Train (T) or Evaluate (F)
 MAX_EVAL=10
 VAL_CYCLE=1 # every nth epoch it will validate
 
@@ -89,7 +92,6 @@ if TRAIN:
 
 	scaler = torch.cuda.amp.GradScaler()
 	optimizer = optim.AdamW(model.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0.01, amsgrad=False)
-
 	criterion = HybridLoss().to(device)
 	prev_loss=float("inf")
 
@@ -97,10 +99,8 @@ if TRAIN:
 
 	start_time=time.time()
 	for epoch in range(20):
-		index=np.random.randint(BATCH_SIZE)
+		start_index=np.random.randint(BATCH_SIZE)
 		t0 = time.time()
-		epoch_accuracy = 0
-		epoch_loss = 0
 		running_loss = 0.0
 
 		model.train()
@@ -114,20 +114,19 @@ if TRAIN:
 
 			optimizer.zero_grad()
 			outputs = model(inputs, mask)
-			cv2.imwrite("Visual_example/"+Visual_example_loc+"/test.png",inputs[0].permute([1,2,0]).cpu().detach().numpy()*255)
+			cv2.imwrite("Visual_example/"+Visual_example_loc+"/test_input.png",cv2.cvtColor(inputs[0].permute([1,2,0]).cpu().detach().numpy()*255, cv2.COLOR_RGB2BGR))
+			cv2.imwrite("Visual_example/"+Visual_example_loc+"/test_output.png",cv2.cvtColor(outputs[0].permute([1,2,0]).cpu().detach().numpy()*255, cv2.COLOR_RGB2BGR))
 			
 
-			with torch.cuda.amp.autocast():
+			with torch.cuda.amp.autocast():  # Automatic mixed precision
 				loss = criterion(outputs, 1-mask.to(device), GT)
 			scaler.scale(loss).backward()
 			scaler.step(optimizer)
 			scaler.update()
-
-			epoch_loss += loss.detach() / len(train_loader)
 		
 			# print statistics
 			running_loss += loss.detach().item()
-			if i % int(len(train_loader)/4)==int((100000/BATCH_SIZE)/4)-1:    # print every 2000 mini-batches
+			if i % int(len(train_loader)/5000)==int(len(train_loader)/5000)-1:    
 				print('[%d, %5d] loss: %.3f' %
 					  (epoch + 1, i + 1, running_loss))
 				
@@ -138,15 +137,20 @@ if TRAIN:
 					torch.save(model.state_dict(), PATH)
 					prev_loss=running_loss
 					print("saving chkpoint")
+					break
 
 				running_loss = 0.0
 
 		if epoch%VAL_CYCLE==0:
 			num_images=min(TrainBatchSize, 3)
-			index=np.random.randint(len(inputs)-num_images)
+			print(num_images)
+			try:
+				start_index=np.random.randint(len(inputs)-num_images)
+			except:
+				start_index=0
 			for i in range(num_images):
-				cv2.imwrite("Visual_example/"+Visual_example_loc+"/"+str(epoch)+"__"+str(i)+"_Input.png",inputs[index+i].permute([1,2,0]).cpu().detach().numpy()*255)
-				cv2.imwrite("Visual_example/"+Visual_example_loc+"/"+str(epoch)+"__"+str(i)+"_Output.png",outputs[index+i].permute([1,2,0]).cpu().detach().numpy()*255)
+				cv2.imwrite("Visual_example/"+Visual_example_loc+"/"+str(epoch)+"__"+str(i)+"_Input.png",inputs[start_index+i].permute([1,2,0]).cpu().detach().numpy()*255)
+				cv2.imwrite("Visual_example/"+Visual_example_loc+"/"+str(epoch)+"__"+str(i)+"_Output.png",outputs[start_index+i].permute([1,2,0]).cpu().detach().numpy()*255)
 			print("#### Performance in epoch ",epoch+1,"training: ",calc_curr_performance(model,eval_loader))
 
 	print('Finished Training')

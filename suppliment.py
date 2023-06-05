@@ -11,9 +11,11 @@ import functools
 from math import ceil
 import pywt
 
+from saicinpainting.evaluation.losses import base_loss
 from einops import rearrange, repeat
 from einops.layers.torch import Rearrange
 import lpips
+from torchmetrics.functional import structural_similarity_index_measure
 
 device=0
 loss_fn=None
@@ -550,22 +552,23 @@ def EvalMetrics(out,gt):
     ssim=[]
     l1=[]
     l2=[]
-    size_img=gt.shape[2]
-    gt=gt.reshape(-1,3,size_img,size_img)
+    fid=[]
+    FID_score=base_loss.FIDScore()
+
+    h=gt.shape[2]
+    gt=gt.reshape(-1,3,h,h)
     for x,y in zip(out,gt):
-    	psnr.append(psnr_eval(y.numpy(),x.numpy()))
-    	ssim.append(ssim_eval(y.permute([1,2,0]).numpy(),x.permute([1,2,0]).numpy(),multichannel=True,data_range=255))
-    	x=x*1.0
-    	y=y*1.0
-    	l1.append(nn.L1Loss()(y,x))
-    	l2.append(nn.MSELoss()(y,x))
+        psnr.append(psnr_eval(y.numpy(),x.numpy()))
+        x=x*1.0
+        y=y*1.0
+        l1.append(nn.L1Loss()(y,x))
+        l2.append(nn.MSELoss()(y,x))
     
     losses["L1"]=np.array(l1).mean()
     losses["L2"]=np.array(l2).mean()
     losses["PSNR"]=np.array(psnr).mean()
-    losses["SSIM"]=np.array(ssim).mean()
-    losses["LPIPS"]=loss_fn(gt.to(device),out.to(device)).mean()
-
+    losses["SSIM"]=np.array(structural_similarity_index_measure(out,gt)).mean()
+    losses["LPIPS"]=loss_fn(gt.to(device),out.to(device)).mean().item()
     return losses
     
 
