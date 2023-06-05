@@ -34,6 +34,8 @@ Stride used in the initial convolutional layers to reduce the input resolution b
 Deciding between strided convolution or patchifying convolutions in the intial conv layer. Used for classification. 'pachify' or 'strided'.
 - `patch_size`: int.  
 Size of each non-overlaping patch in case of patchifying convolution. Should be a multiple of 4.
+- `num_models`: int.  
+Number of consecutive models each consisting of wavemix modules with defined `depth` and additional convolution and deconvolution layers, total number of wavemix modules is the product of num_models and depth.
 
 
 #### Cite the following papers 
