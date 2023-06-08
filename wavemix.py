@@ -46,9 +46,11 @@ TrainDataPath=str(args.Data_Path)
 
 eval_loader=InpaintingDataset(datadir="/home/Drive3/Dharshan/Venv/lama/ImageNet/eval/random_medium_224/",img_suffix=".png")
 
-TrainDataLoaderConfig={'indir': TrainDataPath, 'out_size': 224, 'mask_gen_kwargs': {'irregular_proba': 1, 'irregular_kwargs': {'max_angle': 4, 'max_len': 50, 'max_width': 30, 'max_times': 5, 'min_times': 1}, 'box_proba': 1, 'box_kwargs': {'margin': 10, 'bbox_min_size': 15, 'bbox_max_size': 30, 'max_times': 4, 'min_times': 0}, 'segm_proba': 0}, 'transform_variant': 'distortions', 
-						'dataloader_kwargs': {'batch_size': TrainBatchSize, 'shuffle': True, 'num_workers': 2}}
+# TrainDataLoaderConfig={'indir': TrainDataPath, 'out_size': 96, 'mask_gen_kwargs': {'irregular_proba': 1, 'irregular_kwargs': {'max_angle': 4, 'max_len': 50, 'max_width': 30, 'max_times': 5, 'min_times': 1}, 'box_proba': 1, 'box_kwargs': {'margin': 10, 'bbox_min_size': 15, 'bbox_max_size': 30, 'max_times': 4, 'min_times': 0}, 'segm_proba': 0}, 'transform_variant': 'distortions', 
+# 						'dataloader_kwargs': {'batch_size': TrainBatchSize, 'shuffle': True, 'num_workers': 2}}
 
+TrainDataLoaderConfig={'indir': 'ImageNet/train', 'out_size': 224, 'mask_gen_kwargs': {'irregular_proba': 1, 'irregular_kwargs': {'max_angle': 4, 'max_len': 35, 'max_width': 30, 'max_times': 10, 'min_times': 4}, 'box_proba': 1, 'box_kwargs': {'margin': 0, 'bbox_min_size': 30, 'bbox_max_size': 75, 'max_times': 5, 'min_times': 2}, 'segm_proba': 0}, 'transform_variant': 'distortions', 
+						'dataloader_kwargs': {'batch_size': TrainBatchSize, 'shuffle': False, 'num_workers': 2}}  ### IMAGENET
 
 ### MODEL ARCHITECTURE ###
 
