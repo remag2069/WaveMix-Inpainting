@@ -76,6 +76,12 @@ model = Model(
 	num_models=NUM_MODELS
 ).to(device)
 
+
+summary(model, [(3,224,224), (1,224,224)])
+
+exit()
+
+
 ### END MODEL ARCHITECTURE ###
 
 base_path="WavemixModels"
@@ -139,7 +145,7 @@ if TRAIN:
 					print("saving chkpoint")
 					
 				running_loss = 0.0
-				break
+				# break
 
 		if epoch%VAL_CYCLE==0:
 			num_images=min(TrainBatchSize, 3)
