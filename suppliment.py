@@ -541,11 +541,8 @@ class Model(nn.Module):
 
 ### EVAL METRICES ###
 
-from piqa import SSIM
-from skimage.metrics import structural_similarity as ssim_eval
 from skimage.metrics import peak_signal_noise_ratio as psnr_eval
-from piqa.utils import set_debug
-set_debug(False)
+
 
 def EvalMetrics(out,gt):
     losses={}
@@ -573,18 +570,17 @@ def EvalMetrics(out,gt):
     return losses
     
 
-class HybridLoss(SSIM):
+class HybridLoss(nn.Module):
     def __init__(self, alpha=0.5):
         super(HybridLoss, self).__init__()
         self.alpha=alpha
-        
 
     def forward(self, x,masks, y):
         l_lpips = loss_fn(x,y)
         l_lpips = l_lpips.mean() 
-        l1 = l_lpips + (1-self.alpha)*(nn.L1Loss()(x , y )) + (self.alpha)*(1. - super().forward(x*masks, y*masks))*10
+        l1 = l_lpips + (1-self.alpha)*(nn.L1Loss()(x , y )) + (self.alpha)*(1. - structural_similarity_index_measure(x, y))
+        losses={}
         losses=l1*1000
-
         return losses
 
 def calc_curr_performance(model,valloader, save_imgs=False, save_path="Visual_example/Eval/", entire_dataset=False):

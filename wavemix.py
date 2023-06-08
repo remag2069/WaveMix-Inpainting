@@ -101,7 +101,11 @@ optimizer = optim.AdamW(model.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e
 criterion = HybridLoss().to(device)
 prev_loss=float("inf")
 
-print("#### Performance before training:",calc_curr_performance(model,eval_loader))
+Losses=calc_curr_performance(model,eval_loader)
+Final_losses={}
+for metric in Losses.keys():
+	Final_losses[metric]=np.array(Losses[metric]).mean()
+print("#### Performance before training:",Final_losses)
 
 start_time=time.time()
 for epoch in range(EPOCHS):
@@ -157,7 +161,12 @@ for epoch in range(EPOCHS):
 		for i in range(num_images):
 			cv2.imwrite("Visual_example/"+Visual_example_loc+"/"+str(epoch)+"__"+str(i)+"_Input.png",inputs[start_index+i].permute([1,2,0]).cpu().detach().numpy()*255)
 			cv2.imwrite("Visual_example/"+Visual_example_loc+"/"+str(epoch)+"__"+str(i)+"_Output.png",outputs[start_index+i].permute([1,2,0]).cpu().detach().numpy()*255)
-		print("#### Performance in epoch ",epoch+1,"training: ",calc_curr_performance(model,eval_loader))
+		
+		Losses=calc_curr_performance(model,eval_loader)
+		Final_losses={}
+		for metric in Losses.keys():
+			Final_losses[metric]=np.array(Losses[metric]).mean()
+		print("#### Performance in epoch ",epoch+1,"training: ",Final_losses)
 
 print('Finished Training')
 print(f"Time for AdamW {time.time()-start_time:.4f}")
