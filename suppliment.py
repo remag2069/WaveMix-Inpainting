@@ -10,6 +10,7 @@ import torch.nn as nn
 import functools
 from math import ceil
 import pywt
+from tqdm import tqdm
 
 from saicinpainting.evaluation.losses import base_loss
 from einops import rearrange, repeat
@@ -586,16 +587,30 @@ class HybridLoss(SSIM):
 
         return losses
 
-def calc_curr_performance(model,valloader):
-    for data in valloader:
+def calc_curr_performance(model,valloader, save_imgs=False, save_path="Visual_example/Eval/", entire_dataset=False):
+    global device
+    Losses={"L1":[],"L2":[],"PSNR":[],"SSIM":[],"LPIPS":[]}
+    j=0
+    kernel = np.ones((1, 1), np.uint8)
+    for i, data in enumerate(tqdm(valloader)):
         img, mask=torch.Tensor(data["image"]),torch.Tensor(data["mask"])
-        size_img=img.shape[2]
-        ground_truth=img.clone().detach()
-        img[:, :, :] = img[:, :, :] * mask
-        masked_img=img
-
-        out=model.forward((masked_img.reshape(-1,3,size_img,size_img)).to(device), mask.to(device))
-        losses=EvalMetrics(out.cpu().detach(),ground_truth)
-        break
         
-    return losses
+        h=img.shape[2]
+
+        ground_truth=img.clone().detach()
+        # print(ground_truth.shape)
+        img[:, :, :] = img[:, :, :] * (1-mask)
+        masked_img=img
+        # print(ground_truth.max())
+
+        
+        out=model.forward((masked_img.reshape(-1,3,h,h)).to(device), mask.to(device))
+        losses=EvalMetrics(out.cpu().detach(),ground_truth)
+
+        if not entire_dataset and i >100:
+            break
+
+        for metric in losses.keys():
+            Losses[metric].append(losses[metric])
+        
+    return Losses

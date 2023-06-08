@@ -22,11 +22,12 @@ from torchvision.transforms import Resize
 parser = argparse.ArgumentParser()
 
 
-parser.add_argument("-vis", "--Visual_example", default="Train_samples", help = "Path to save visual examples")
+parser.add_argument("-vis", "--Visual_example", default="Eval", help = "Path to save visual examples")
 parser.add_argument("-batch", "--Batch_size", default=40, help = "Batch Size")
 parser.add_argument("-gpu", "--GPU_number", default=-1, help = "GPU_number")
-parser.add_argument("-read", "--read_path", default="ImageNet/eval/random_medium_224/", help = "read path")
+parser.add_argument("-read", "--read_path", default="/home/Drive3/Dharshan/Venv/lama/ImageNet/eval/random_medium_224/", help = "read path")
 parser.add_argument("-save", "--save_path", default="output1", help = "save path")
+parser.add_argument("-model", "--model_path", default=None, help = "model path")
 
 
 args = parser.parse_args()
@@ -38,8 +39,14 @@ else:
 initialize_gpu(args.GPU_number)
 print(device)
 
-
 TrainBatchSize=int(args.Batch_size)
+if args.model_path==None:
+	PATH = "WavemixModelschkpoint__IMG__12__MODEL__D7_E128_N4_C1_F128_#dwt=1_thin_mask.pth"
+else:
+	PATH = args.model_path
+
+
+
 
 
 # eval_loader=InpaintingDataset(datadir="my_dataset/eval/random_thick_96/",img_suffix=".png")
@@ -51,19 +58,22 @@ eval_loader=make_default_val_dataloader(indir=args.read_path,img_suffix=".png", 
 
 
 
-BATCH_SIZE=64
+
+### MODEL ARCHITECTURE ###
+
+# Module parameters
 IMAGE_SIZE=(224,224)
 MASK_SIZE=12
-MODEL_DEPTH=7 #16
-MODEL_EMBEDDING=128 #256
-NUM_MODELS=1
+MODEL_DEPTH=7
+MODEL_EMBEDDING=128
 FF_CHANNEL=128
 REDUCTION_CONV=1
-NUM_DWT=1 
+NUM_DWT=1
+
+
+NUM_MODELS=4 # number of models not modules
 # ALPHA=0.75
 MAX_EVAL=10
-base_path="WavemixModels"
-extra="_thin_mask"
 LOAD=False
 
 class Model(nn.Module):
@@ -114,11 +124,11 @@ model = Model(
 
 
 # PATH = base_path + str('chkpoint__IMG__'+str(MASK_SIZE)+'__MODEL__D'+str(MODEL_DEPTH)+'_E'+str(MODEL_EMBEDDING)+'_N'+str(NUM_MODELS)+'_C'+str(REDUCTION_CONV)+'_F'+str(FF_CHANNEL)+'_#dwt='+str(NUM_DWT)+extra+'.pth')
-PATH = "WavemixModelschkpoint__IMG__12__MODEL__D7_E128_N1_C1_F128_#dwt=1_thin_mask_newSSIM.pth"
+
 print(PATH)
 model.load_state_dict(torch.load(PATH))
 print("LOADED WEIGHTS!!!")
-Losses=calc_curr_performance(model,eval_loader, save_imgs=False, save_path=args.save_path, entire_dataset=True)
+Losses=calc_curr_performance(model,eval_loader, entire_dataset=False)
 Final_losses={}
 for metric in Losses.keys():
 	Final_losses[metric]=np.array(Losses[metric]).mean()
@@ -150,7 +160,7 @@ for i,data in tqdm(enumerate(eval_loader)):
 		
 
 		out=model.forward((masked_img.reshape(-1,3,h,w)).to(device), mask.to(device))
-		cv2.imwrite("Visual_example/Eval/"+str(Losses["LPIPS"][i])+"_eval_img.png",cv2.cvtColor(img[0].permute([1,2,0]).cpu().detach().numpy()*255, cv2.COLOR_RGB2BGR))
+		cv2.imwrite("Visual_example/"+Visual_example_loc+"/"+str(Losses["LPIPS"][i])+"_eval_img.png",cv2.cvtColor(img[0].permute([1,2,0]).cpu().detach().numpy()*255, cv2.COLOR_RGB2BGR))
 		# print(ground_truth.shape)
-		cv2.imwrite("Visual_example/Eval/"+str(Losses["LPIPS"][i])+"_eval_gt.png",cv2.cvtColor(ground_truth[0].permute([1,2,0]).numpy()*255, cv2.COLOR_RGB2BGR))
-		cv2.imwrite("Visual_example/Eval/"+str(Losses["LPIPS"][i])+"_eval_out.png",cv2.cvtColor(out[0].permute([1,2,0]).cpu().detach().numpy()*255, cv2.COLOR_RGB2BGR))
+		cv2.imwrite("Visual_example/"+Visual_example_loc+"/"+str(Losses["LPIPS"][i])+"_eval_gt.png",cv2.cvtColor(ground_truth[0].permute([1,2,0]).numpy()*255, cv2.COLOR_RGB2BGR))
+		cv2.imwrite("Visual_example/"+Visual_example_loc+"/"+str(Losses["LPIPS"][i])+"_eval_out.png",cv2.cvtColor(out[0].permute([1,2,0]).cpu().detach().numpy()*255, cv2.COLOR_RGB2BGR))
