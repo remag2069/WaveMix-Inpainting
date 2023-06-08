@@ -95,90 +95,89 @@ MAX_EVAL=10
 VAL_CYCLE=1 # every nth epoch it will validate
 EPOCHS=100
 
-if TRAIN:
-	train_loader=make_default_train_dataloader(**TrainDataLoaderConfig)
+train_loader=make_default_train_dataloader(**TrainDataLoaderConfig)
 
-	scaler = torch.cuda.amp.GradScaler()
-	optimizer = optim.AdamW(model.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0.01, amsgrad=False)
-	criterion = HybridLoss().to(device)
-	prev_loss=float("inf")
+scaler = torch.cuda.amp.GradScaler()
+optimizer = optim.AdamW(model.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0.01, amsgrad=False)
+criterion = HybridLoss().to(device)
+prev_loss=float("inf")
 
-	print("#### Performance before training:",calc_curr_performance(model,eval_loader))
+print("#### Performance before training:",calc_curr_performance(model,eval_loader))
 
-	start_time=time.time()
-	for epoch in range(EPOCHS):
-		start_index=np.random.randint(BATCH_SIZE)
-		t0 = time.time()
-		running_loss = 0.0
+start_time=time.time()
+for epoch in range(EPOCHS):
+	start_index=np.random.randint(BATCH_SIZE)
+	t0 = time.time()
+	running_loss = 0.0
 
-		model.train()
-		for i, data in enumerate(tqdm(train_loader), 0):
-			# get the inputs; data is a list of [inputs, labels]
-			image, mask = data["image"].to(device), data["mask"].to(device)
-			GT = image.clone().detach() ## GT
-			GT=GT.to(device)
-			image[:, :, :] = image[:, :, :] * (1-mask)
-			inputs=image
+	model.train()
+	for i, data in enumerate(tqdm(train_loader), 0):
+		# get the inputs; data is a list of [inputs, labels]
+		image, mask = data["image"].to(device), data["mask"].to(device)
+		GT = image.clone().detach() ## GT
+		GT=GT.to(device)
+		image[:, :, :] = image[:, :, :] * (1-mask)
+		inputs=image
 
-			optimizer.zero_grad()
-			outputs = model(inputs, mask)
-			cv2.imwrite("Visual_example/"+Visual_example_loc+"/test_input.png",cv2.cvtColor(inputs[0].permute([1,2,0]).cpu().detach().numpy()*255, cv2.COLOR_RGB2BGR))
-			cv2.imwrite("Visual_example/"+Visual_example_loc+"/test_output.png",cv2.cvtColor(outputs[0].permute([1,2,0]).cpu().detach().numpy()*255, cv2.COLOR_RGB2BGR))
-			
-
-			with torch.cuda.amp.autocast():  # Automatic mixed precision
-				loss = criterion(outputs, 1-mask.to(device), GT)
-			scaler.scale(loss).backward()
-			scaler.step(optimizer)
-			scaler.update()
+		optimizer.zero_grad()
+		outputs = model(inputs, mask)
+		cv2.imwrite("Visual_example/"+Visual_example_loc+"/test_input.png",cv2.cvtColor(inputs[0].permute([1,2,0]).cpu().detach().numpy()*255, cv2.COLOR_RGB2BGR))
+		cv2.imwrite("Visual_example/"+Visual_example_loc+"/test_output.png",cv2.cvtColor(outputs[0].permute([1,2,0]).cpu().detach().numpy()*255, cv2.COLOR_RGB2BGR))
 		
-			# print statistics
-			running_loss += loss.detach().item()
-			if i % int(len(train_loader)/50)==int(len(train_loader)/50)-1:    
-				print('[%d, %5d] loss: %.3f' %
-					  (epoch + 1, i + 1, running_loss))
+
+		with torch.cuda.amp.autocast():  # Automatic mixed precision
+			loss = criterion(outputs, 1-mask.to(device), GT)
+		scaler.scale(loss).backward()
+		scaler.step(optimizer)
+		scaler.update()
+	
+		# print statistics
+		running_loss += loss.detach().item()
+		if i % int(len(train_loader)/50)==int(len(train_loader)/50)-1:    
+			print('[%d, %5d] loss: %.3f' %
+				  (epoch + 1, i + 1, running_loss))
+			
+			if prev_loss >= running_loss:
+				cv2.imwrite("Visual_example/"+Visual_example_loc+"/"+"temp_input"+str(epoch)+".png",cv2.cvtColor(inputs[0].permute([1,2,0]).cpu().detach().numpy()*255, cv2.COLOR_RGB2BGR))
+				cv2.imwrite("Visual_example/"+Visual_example_loc+"/"+"temp_output"+str(epoch)+".png",cv2.cvtColor(outputs[0].permute([1,2,0]).cpu().detach().numpy()*255, cv2.COLOR_RGB2BGR))
+				PATH = base_path + str('chkpoint__IMG__'+str(MASK_SIZE)+'__MODEL__D'+str(MODEL_DEPTH)+'_E'+str(MODEL_EMBEDDING)+'_N'+str(NUM_MODELS)+'_C'+str(REDUCTION_CONV)+'_F'+str(FF_CHANNEL)+'_#dwt='+str(NUM_DWT)+extra+'.pth')
+				torch.save(model.state_dict(), PATH)
+				prev_loss=running_loss
+				print("saving chkpoint")
 				
-				if prev_loss >= running_loss:
-					cv2.imwrite("Visual_example/"+Visual_example_loc+"/"+"temp_input"+str(epoch)+".png",cv2.cvtColor(inputs[0].permute([1,2,0]).cpu().detach().numpy()*255, cv2.COLOR_RGB2BGR))
-					cv2.imwrite("Visual_example/"+Visual_example_loc+"/"+"temp_output"+str(epoch)+".png",cv2.cvtColor(outputs[0].permute([1,2,0]).cpu().detach().numpy()*255, cv2.COLOR_RGB2BGR))
-					PATH = base_path + str('chkpoint__IMG__'+str(MASK_SIZE)+'__MODEL__D'+str(MODEL_DEPTH)+'_E'+str(MODEL_EMBEDDING)+'_N'+str(NUM_MODELS)+'_C'+str(REDUCTION_CONV)+'_F'+str(FF_CHANNEL)+'_#dwt='+str(NUM_DWT)+extra+'.pth')
-					torch.save(model.state_dict(), PATH)
-					prev_loss=running_loss
-					print("saving chkpoint")
-					
-				running_loss = 0.0
-				# break
+			running_loss = 0.0
+			# break
 
-		if epoch%VAL_CYCLE==0:
-			num_images=min(TrainBatchSize, 3)
-			print(num_images)
-			try:
-				start_index=np.random.randint(len(inputs)-num_images)
-			except:
-				start_index=0
-			for i in range(num_images):
-				cv2.imwrite("Visual_example/"+Visual_example_loc+"/"+str(epoch)+"__"+str(i)+"_Input.png",inputs[start_index+i].permute([1,2,0]).cpu().detach().numpy()*255)
-				cv2.imwrite("Visual_example/"+Visual_example_loc+"/"+str(epoch)+"__"+str(i)+"_Output.png",outputs[start_index+i].permute([1,2,0]).cpu().detach().numpy()*255)
-			print("#### Performance in epoch ",epoch+1,"training: ",calc_curr_performance(model,eval_loader))
+	if epoch%VAL_CYCLE==0:
+		num_images=min(TrainBatchSize, 3)
+		print(num_images)
+		try:
+			start_index=np.random.randint(len(inputs)-num_images)
+		except:
+			start_index=0
+		for i in range(num_images):
+			cv2.imwrite("Visual_example/"+Visual_example_loc+"/"+str(epoch)+"__"+str(i)+"_Input.png",inputs[start_index+i].permute([1,2,0]).cpu().detach().numpy()*255)
+			cv2.imwrite("Visual_example/"+Visual_example_loc+"/"+str(epoch)+"__"+str(i)+"_Output.png",outputs[start_index+i].permute([1,2,0]).cpu().detach().numpy()*255)
+		print("#### Performance in epoch ",epoch+1,"training: ",calc_curr_performance(model,eval_loader))
 
-	print('Finished Training')
-	print(f"Time for AdamW {time.time()-start_time:.4f}")
+print('Finished Training')
+print(f"Time for AdamW {time.time()-start_time:.4f}")
 	
 
-else:
-	PATH = base_path + str('chkpoint__IMG__'+str(MASK_SIZE)+'__MODEL__D'+str(MODEL_DEPTH)+'_E'+str(MODEL_EMBEDDING)+'_N'+str(NUM_MODELS)+'_C'+str(REDUCTION_CONV)+'_F'+str(FF_CHANNEL)+'_#dwt='+str(NUM_DWT)+extra+'.pth')
-	model.load_state_dict(torch.load(PATH))
-	print("LOADED WEIGHTS!!!")
-	print("PERFORMANCE: \n",calc_curr_performance(model,eval_loader))
-	for i, data in enumerate(tqdm(eval_loader), 0):
-		if i >= MAX_EVAL:
-			break
+# else:
+# 	PATH = base_path + str('chkpoint__IMG__'+str(MASK_SIZE)+'__MODEL__D'+str(MODEL_DEPTH)+'_E'+str(MODEL_EMBEDDING)+'_N'+str(NUM_MODELS)+'_C'+str(REDUCTION_CONV)+'_F'+str(FF_CHANNEL)+'_#dwt='+str(NUM_DWT)+extra+'.pth')
+# 	model.load_state_dict(torch.load(PATH))
+# 	print("LOADED WEIGHTS!!!")
+# 	print("PERFORMANCE: \n",calc_curr_performance(model,eval_loader))
+# 	for i, data in enumerate(tqdm(eval_loader), 0):
+# 		if i >= MAX_EVAL:
+# 			break
 
-		image, mask = torch.Tensor(data["image"]).to(device), torch.Tensor(data["mask"]).to(device)
-		labels = image.clone().detach() ## expected output
-		image[:, :, :] = image[:, :, :] * (1-mask)
-		inputs=image.reshape(-1,3,96,96)
-		mask=mask.reshape(-1,1,96,96)
-		outputs = model(inputs, mask)
-		cv2.imwrite("Visual_example/"+str(i)+"_Output.png",outputs[0].permute([1,2,0]).cpu().detach().numpy()*255)
-		cv2.imwrite("Visual_example/"+str(i)+"_Input.png",inputs[0].permute([1,2,0]).cpu().detach().numpy()*255)
+# 		image, mask = torch.Tensor(data["image"]).to(device), torch.Tensor(data["mask"]).to(device)
+# 		labels = image.clone().detach() ## expected output
+# 		image[:, :, :] = image[:, :, :] * (1-mask)
+# 		inputs=image.reshape(-1,3,96,96)
+# 		mask=mask.reshape(-1,1,96,96)
+# 		outputs = model(inputs, mask)
+# 		cv2.imwrite("Visual_example/"+str(i)+"_Output.png",outputs[0].permute([1,2,0]).cpu().detach().numpy()*255)
+# 		cv2.imwrite("Visual_example/"+str(i)+"_Input.png",inputs[0].permute([1,2,0]).cpu().detach().numpy()*255)
