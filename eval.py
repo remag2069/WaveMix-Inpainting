@@ -128,14 +128,14 @@ model = Model(
 print(PATH)
 model.load_state_dict(torch.load(PATH))
 print("LOADED WEIGHTS!!!")
-Losses=calc_curr_performance(model,eval_loader, entire_dataset=False)
+Losses=calc_curr_performance(model,eval_loader, entire_dataset=True)
 Final_losses={}
 for metric in Losses.keys():
 	Final_losses[metric]=np.array(Losses[metric]).mean()
 print("PERFORMANCE: \n",Final_losses)
 
 
-Topn=100
+Topn=100 ## Top n images based on lpips values are saved in eval directory
 Indices=[]
 
 Indices=np.argsort(Losses["LPIPS"])[:Topn]

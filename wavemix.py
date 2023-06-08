@@ -79,7 +79,7 @@ model = Model(
 ).to(device)
 
 
-summary(model, [(3,224,224), (1,224,224)])
+# summary(model, [(3,224,224), (1,224,224)])
 
 
 
