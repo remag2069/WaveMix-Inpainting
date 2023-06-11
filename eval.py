@@ -122,20 +122,20 @@ model = Model(
 	num_models=NUM_MODELS
 ).to(device)
 
-
+model.eval()
 # PATH = base_path + str('chkpoint__IMG__'+str(MASK_SIZE)+'__MODEL__D'+str(MODEL_DEPTH)+'_E'+str(MODEL_EMBEDDING)+'_N'+str(NUM_MODELS)+'_C'+str(REDUCTION_CONV)+'_F'+str(FF_CHANNEL)+'_#dwt='+str(NUM_DWT)+extra+'.pth')
 
 print(PATH)
 model.load_state_dict(torch.load(PATH))
 print("LOADED WEIGHTS!!!")
-Losses=calc_curr_performance(model,eval_loader, entire_dataset=True)
+Losses=calc_curr_performance(model,eval_loader, entire_dataset=False)
 Final_losses={}
 for metric in Losses.keys():
 	Final_losses[metric]=np.array(Losses[metric]).mean()
 print("PERFORMANCE: \n",Final_losses)
 
 
-Topn=100 ## Top n images based on lpips values are saved in eval directory
+Topn=10 ## Top n images based on lpips values are saved in eval directory
 Indices=[]
 
 Indices=np.argsort(Losses["LPIPS"])[:Topn]

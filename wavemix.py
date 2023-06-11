@@ -136,7 +136,7 @@ for epoch in range(EPOCHS):
 	
 		# print statistics
 		running_loss += loss.detach().item()
-		if i % int(len(train_loader)/50)==int(len(train_loader)/50)-1:    
+		if i % int(len(train_loader)/500)==int(len(train_loader)/500)-1:    
 			print('[%d, %5d] loss: %.3f' %
 				  (epoch + 1, i + 1, running_loss))
 			
@@ -149,7 +149,7 @@ for epoch in range(EPOCHS):
 				print("saving chkpoint")
 				
 			running_loss = 0.0
-			# break
+			break
 
 	if epoch%VAL_CYCLE==0:
 		num_images=min(TrainBatchSize, 3)
@@ -162,7 +162,9 @@ for epoch in range(EPOCHS):
 			cv2.imwrite("Visual_example/"+Visual_example_loc+"/"+str(epoch)+"__"+str(i)+"_Input.png",inputs[start_index+i].permute([1,2,0]).cpu().detach().numpy()*255)
 			cv2.imwrite("Visual_example/"+Visual_example_loc+"/"+str(epoch)+"__"+str(i)+"_Output.png",outputs[start_index+i].permute([1,2,0]).cpu().detach().numpy()*255)
 		
-		Losses=calc_curr_performance(model,eval_loader)
+		model.eval()
+		with torch.no_grad():
+			Losses=calc_curr_performance(model,eval_loader)
 		Final_losses={}
 		for metric in Losses.keys():
 			Final_losses[metric]=np.array(Losses[metric]).mean()
