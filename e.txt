@@ -21,3 +21,294 @@ saving chkpoint
 saving chkpoint
 3
 #### Performance in epoch  4 training:  {'L1': 0.0412413, 'L2': 0.020292908, 'PSNR': 19.328997132436694, 'SSIM': 0.83246523, 'LPIPS': 0.1828160326706596}
+[5,   427] loss: 65565.529
+saving chkpoint
+3
+#### Performance in epoch  5 training:  {'L1': 0.024050843, 'L2': 0.005718519, 'PSNR': 23.375710263202215, 'SSIM': 0.8405371, 'LPIPS': 0.1379805723444955}
+[6,   427] loss: 67619.030
+3
+#### Performance in epoch  6 training:  {'L1': 0.727719, 'L2': 22.934427, 'PSNR': -8.124914071667096, 'SSIM': 0.92329323, 'LPIPS': 0.5075167699320482}
+[7,   427] loss: 79919.809
+3
+#### Performance in epoch  7 training:  {'L1': 0.03213988, 'L2': 0.010616461, 'PSNR': 20.892505535054703, 'SSIM': 0.89119965, 'LPIPS': 0.16049419551866478}
+[8,   427] loss: nan
+3
+#### Performance in epoch  8 training:  {'L1': 0.2400577, 'L2': 0.48111904, 'PSNR': 3.5684558398805133, 'SSIM': 0.7692563, 'LPIPS': 0.5334626381645108}
+[9,   427] loss: 236244.053
+3
+#### Performance in epoch  9 training:  {'L1': 0.12128457, 'L2': 0.14397575, 'PSNR': 8.862857583380263, 'SSIM': 0.8098931, 'LPIPS': 0.38667196714051877}
+[10,   427] loss: 277150.413
+3
+#### Performance in epoch  10 training:  {'L1': 0.061079312, 'L2': 0.03213, 'PSNR': 15.686487609784452, 'SSIM': 0.7945818, 'LPIPS': 0.30117911129894825}
+[11,   427] loss: 304071.074
+3
+#### Performance in epoch  11 training:  {'L1': 0.06404475, 'L2': 0.032440167, 'PSNR': 15.51535495039747, 'SSIM': 0.7930865, 'LPIPS': 0.26703228321996064}
+[12,   427] loss: 307925.917
+3
+#### Performance in epoch  12 training:  {'L1': 0.075482, 'L2': 0.056452025, 'PSNR': 13.106679833025526, 'SSIM': 0.80768806, 'LPIPS': 0.3921847999981134}
+[13,   427] loss: 224209.118
+3
+#### Performance in epoch  13 training:  {'L1': 0.5061773, 'L2': 2.328418, 'PSNR': -3.2546224178345797, 'SSIM': 0.80249417, 'LPIPS': 0.5862382648900004}
+[14,   427] loss: 255747.681
+3
+#### Performance in epoch  14 training:  {'L1': 0.3304267, 'L2': 1.2437805, 'PSNR': -0.5361373362163749, 'SSIM': 0.77429295, 'LPIPS': 0.6080825842253053}
+[15,   427] loss: 227525.404
+3
+#### Performance in epoch  15 training:  {'L1': 0.06687682, 'L2': 0.039394733, 'PSNR': 14.564632518987679, 'SSIM': 0.7941536, 'LPIPS': 0.2957745822939542}
+[16,   427] loss: 251107.872
+3
+#### Performance in epoch  16 training:  {'L1': 0.13726726, 'L2': 0.175883, 'PSNR': 8.015839858350517, 'SSIM': 0.80421865, 'LPIPS': 0.5142315114193624}
+[17,   427] loss: 283058.381
+3
+#### Performance in epoch  17 training:  {'L1': 0.26172876, 'L2': 0.41205388, 'PSNR': 4.241682691246981, 'SSIM': 0.77083087, 'LPIPS': 0.519913322117069}
+[18,   427] loss: 245832.751
+3
+#### Performance in epoch  18 training:  {'L1': 0.5171716, 'L2': 2.1683962, 'PSNR': -2.9355661967146034, 'SSIM': 0.71247697, 'LPIPS': 0.6280845787265513}
+[19,   427] loss: 356027.368
+3
+#### Performance in epoch  19 training:  {'L1': 0.31615847, 'L2': 2.00859, 'PSNR': -2.615123410774339, 'SSIM': 0.8442895, 'LPIPS': 0.5871768612967859}
+[20,   427] loss: 271368.846
+3
+#### Performance in epoch  20 training:  {'L1': 0.06339261, 'L2': 0.03947932, 'PSNR': 14.618536348505348, 'SSIM': 0.8136704, 'LPIPS': 0.3223909531341921}
+[21,   427] loss: 183612.723
+3
+#### Performance in epoch  21 training:  {'L1': 0.047398977, 'L2': 0.01882337, 'PSNR': 18.067921287460496, 'SSIM': 0.80635816, 'LPIPS': 0.243145472895686}
+[22,   427] loss: 268539.433
+3
+#### Performance in epoch  22 training:  {'L1': 0.05645726, 'L2': 0.026570346, 'PSNR': 16.619402856378947, 'SSIM': 0.80758095, 'LPIPS': 0.3005363204617902}
+[23,   427] loss: 280419.561
+3
+#### Performance in epoch  23 training:  {'L1': 0.063494384, 'L2': 0.034666095, 'PSNR': 15.528991864333697, 'SSIM': 0.8022055, 'LPIPS': 0.32627404768868246}
+[24,   427] loss: 721116.068
+3
+#### Performance in epoch  24 training:  {'L1': 1.2324597, 'L2': 17.791384, 'PSNR': -12.110106223069849, 'SSIM': 0.83189684, 'LPIPS': 0.6479703938902015}
+[25,   427] loss: 514327.971
+3
+#### Performance in epoch  25 training:  {'L1': 0.598003, 'L2': 4.930506, 'PSNR': -6.529419632918787, 'SSIM': 0.8406055, 'LPIPS': 0.6272583394357474}
+[26,   427] loss: 410902.469
+3
+#### Performance in epoch  26 training:  {'L1': 0.37030768, 'L2': 1.8083348, 'PSNR': -2.1689808293673942, 'SSIM': 0.839666, 'LPIPS': 0.6063559568754517}
+[27,   427] loss: 353052.124
+3
+#### Performance in epoch  27 training:  {'L1': 0.2092194, 'L2': 0.5630442, 'PSNR': 2.911314120714762, 'SSIM': 0.83728176, 'LPIPS': 0.5483466417777656}
+[28,   427] loss: 290859.719
+3
+#### Performance in epoch  28 training:  {'L1': 0.110918336, 'L2': 0.12990797, 'PSNR': 9.33912375854323, 'SSIM': 0.83072644, 'LPIPS': 0.4539281724408121}
+[29,   427] loss: 230416.309
+3
+#### Performance in epoch  29 training:  {'L1': 0.06369812, 'L2': 0.038034663, 'PSNR': 14.748622718413953, 'SSIM': 0.82619447, 'LPIPS': 0.32815857711109786}
+[30,   427] loss: 196438.675
+3
+#### Performance in epoch  30 training:  {'L1': 0.067855135, 'L2': 0.038918193, 'PSNR': 14.66002813096303, 'SSIM': 0.7894352, 'LPIPS': 0.3122254409412346}
+[31,   427] loss: 182103.558
+3
+#### Performance in epoch  31 training:  {'L1': 0.050051518, 'L2': 0.020696208, 'PSNR': 17.54131615172449, 'SSIM': 0.803754, 'LPIPS': 0.24742912836741693}
+[32,   427] loss: 266666.811
+3
+#### Performance in epoch  32 training:  {'L1': 0.22510496, 'L2': 0.56278676, 'PSNR': 2.8934114630774816, 'SSIM': 0.81766796, 'LPIPS': 0.4948048578335507}
+[33,   427] loss: 241842.703
+3
+#### Performance in epoch  33 training:  {'L1': 0.056847237, 'L2': 0.0267208, 'PSNR': 16.314068161004414, 'SSIM': 0.8131998, 'LPIPS': 0.3002609828173524}
+[34,   427] loss: 189284.630
+3
+#### Performance in epoch  34 training:  {'L1': 0.051233508, 'L2': 0.022373294, 'PSNR': 17.265910460208023, 'SSIM': 0.7980682, 'LPIPS': 0.276368579799586}
+[35,   427] loss: 379380.138
+3
+#### Performance in epoch  35 training:  {'L1': 0.33904713, 'L2': 1.0660601, 'PSNR': 0.1661182325110669, 'SSIM': 0.81642973, 'LPIPS': 0.6319881398784052}
+[36,   427] loss: 257602.134
+3
+#### Performance in epoch  36 training:  {'L1': 0.12001558, 'L2': 0.124965854, 'PSNR': 9.450547537140539, 'SSIM': 0.80410886, 'LPIPS': 0.4330524554347048}
+[37,   427] loss: 215058.938
+3
+#### Performance in epoch  37 training:  {'L1': 0.08737885, 'L2': 0.059942603, 'PSNR': 12.791389310232002, 'SSIM': 0.77853394, 'LPIPS': 0.3624965997763199}
+[38,   427] loss: 272631.223
+3
+#### Performance in epoch  38 training:  {'L1': 0.05392593, 'L2': 0.025293117, 'PSNR': 16.74826745847754, 'SSIM': 0.8084978, 'LPIPS': 0.2821770660800509}
+[39,   427] loss: 394935.886
+3
+#### Performance in epoch  39 training:  {'L1': 0.11009976, 'L2': 0.109312505, 'PSNR': 10.013336196237583, 'SSIM': 0.8107802, 'LPIPS': 0.40162283978839913}
+[40,   427] loss: 210203.172
+3
+#### Performance in epoch  40 training:  {'L1': 0.04978134, 'L2': 0.019956322, 'PSNR': 17.75695604263869, 'SSIM': 0.80571157, 'LPIPS': 0.2573867818285333}
+[41,   427] loss: 299777.641
+3
+#### Performance in epoch  41 training:  {'L1': 0.29497072, 'L2': 0.80590576, 'PSNR': 1.352860505331246, 'SSIM': 0.77937764, 'LPIPS': 0.5733755685315274}
+[42,   427] loss: 237728.777
+3
+#### Performance in epoch  42 training:  {'L1': 0.10706477, 'L2': 0.10091357, 'PSNR': 10.424960119669263, 'SSIM': 0.78792346, 'LPIPS': 0.4174897058470414}
+[43,   427] loss: 310545.365
+3
+#### Performance in epoch  43 training:  {'L1': 0.15541382, 'L2': 0.24842349, 'PSNR': 6.50240065088827, 'SSIM': 0.80632305, 'LPIPS': 0.40723547228787205}
+[44,   427] loss: 221575.397
+3
+#### Performance in epoch  44 training:  {'L1': 0.51878554, 'L2': 3.925689, 'PSNR': -5.54509969361782, 'SSIM': 0.85474527, 'LPIPS': 0.5724242421069948}
+[45,   427] loss: 458941.567
+3
+#### Performance in epoch  45 training:  {'L1': 0.21689126, 'L2': 0.47477868, 'PSNR': 3.645692125242037, 'SSIM': 0.81312793, 'LPIPS': 0.5489912249959341}
+[46,   427] loss: 231126.893
+3
+#### Performance in epoch  46 training:  {'L1': 0.15402591, 'L2': 0.2637016, 'PSNR': 6.201176520460279, 'SSIM': 0.82453126, 'LPIPS': 0.5060640015814564}
+[47,   427] loss: 236580.138
+3
+#### Performance in epoch  47 training:  {'L1': 0.067971766, 'L2': 0.038374897, 'PSNR': 14.683828533905412, 'SSIM': 0.7864587, 'LPIPS': 0.28270983459925886}
+[48,   427] loss: nan
+3
+#### Performance in epoch  48 training:  {'L1': 2.8334105, 'L2': 178.81816, 'PSNR': -19.701621569211433, 'SSIM': 0.8663862, 'LPIPS': 0.6267203982218658}
+[49,   427] loss: nan
+3
+#### Performance in epoch  49 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[50,   427] loss: nan
+3
+#### Performance in epoch  50 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[51,   427] loss: nan
+3
+#### Performance in epoch  51 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[52,   427] loss: nan
+3
+#### Performance in epoch  52 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[53,   427] loss: nan
+3
+#### Performance in epoch  53 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[54,   427] loss: nan
+3
+#### Performance in epoch  54 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[55,   427] loss: nan
+3
+#### Performance in epoch  55 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[56,   427] loss: nan
+3
+#### Performance in epoch  56 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[57,   427] loss: nan
+3
+#### Performance in epoch  57 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[58,   427] loss: nan
+3
+#### Performance in epoch  58 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[59,   427] loss: nan
+3
+#### Performance in epoch  59 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[60,   427] loss: nan
+3
+#### Performance in epoch  60 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[61,   427] loss: nan
+3
+#### Performance in epoch  61 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[62,   427] loss: nan
+3
+#### Performance in epoch  62 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[63,   427] loss: nan
+3
+#### Performance in epoch  63 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[64,   427] loss: nan
+3
+#### Performance in epoch  64 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[65,   427] loss: nan
+3
+#### Performance in epoch  65 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[66,   427] loss: nan
+3
+#### Performance in epoch  66 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[67,   427] loss: nan
+3
+#### Performance in epoch  67 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[68,   427] loss: nan
+3
+#### Performance in epoch  68 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[69,   427] loss: nan
+3
+#### Performance in epoch  69 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[70,   427] loss: nan
+3
+#### Performance in epoch  70 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[71,   427] loss: nan
+3
+#### Performance in epoch  71 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[72,   427] loss: nan
+3
+#### Performance in epoch  72 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[73,   427] loss: nan
+3
+#### Performance in epoch  73 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[74,   427] loss: nan
+3
+#### Performance in epoch  74 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[75,   427] loss: nan
+3
+#### Performance in epoch  75 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[76,   427] loss: nan
+3
+#### Performance in epoch  76 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[77,   427] loss: nan
+3
+#### Performance in epoch  77 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[78,   427] loss: nan
+3
+#### Performance in epoch  78 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[79,   427] loss: nan
+3
+#### Performance in epoch  79 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[80,   427] loss: nan
+3
+#### Performance in epoch  80 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[81,   427] loss: nan
+3
+#### Performance in epoch  81 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[82,   427] loss: nan
+3
+#### Performance in epoch  82 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[83,   427] loss: nan
+3
+#### Performance in epoch  83 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[84,   427] loss: nan
+3
+#### Performance in epoch  84 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[85,   427] loss: nan
+3
+#### Performance in epoch  85 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[86,   427] loss: nan
+3
+#### Performance in epoch  86 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[87,   427] loss: nan
+3
+#### Performance in epoch  87 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[88,   427] loss: nan
+3
+#### Performance in epoch  88 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[89,   427] loss: nan
+3
+#### Performance in epoch  89 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[90,   427] loss: nan
+3
+#### Performance in epoch  90 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[91,   427] loss: nan
+3
+#### Performance in epoch  91 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[92,   427] loss: nan
+3
+#### Performance in epoch  92 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[93,   427] loss: nan
+3
+#### Performance in epoch  93 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[94,   427] loss: nan
+3
+#### Performance in epoch  94 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[95,   427] loss: nan
+3
+#### Performance in epoch  95 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[96,   427] loss: nan
+3
+#### Performance in epoch  96 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[97,   427] loss: nan
+3
+#### Performance in epoch  97 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[98,   427] loss: nan
+3
+#### Performance in epoch  98 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[99,   427] loss: nan
+3
+#### Performance in epoch  99 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+[100,   427] loss: nan
+3
+#### Performance in epoch  100 training:  {'L1': nan, 'L2': nan, 'PSNR': nan, 'SSIM': nan, 'LPIPS': 0.8180852077975131}
+Finished Training
+Time for AdamW 38672.2894

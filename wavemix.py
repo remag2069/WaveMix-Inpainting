@@ -65,7 +65,7 @@ REDUCTION_CONV=1
 NUM_DWT=1
 
 
-NUM_MODELS=4 # number of models not modules
+NUM_MODELS=1 # number of models not modules
 
 
 model = Model(
