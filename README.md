@@ -1,8 +1,40 @@
 # WaveMix-Inpainting
  
-  
+1. Env
+```
+virtualenv inpenv --python=/usr/bin/python3
+source inpenv/bin/activate
+pip install torch==1.8.0 torchvision==0.9.0
 
+cd WaveMix-Inpainting
+pip install -r requirements.txt 
 
+export TORCH_HOME=$(pwd) && export PYTHONPATH=$(pwd)
+```
+4. create dataset
+
+Download the dataset and divide it into train and test sets, organize the folder as following:
+-> WaveMix-Inpainting
+	-> MyData
+		-> train
+		-> test_source
+
+create yaml file with appropriate masking policy following example.yaml and call it MyData.yaml
+
+run the following command:
+```
+python3 bin/gen_mask_dataset.py \
+MyData.yaml \
+MyData/test_source/ \
+MyData/test/masked_images/
+```
+
+5. run file
+
+```
+python3 wavepaint_celebhq.py -batch 16 -save visual_example
+```
+where `batch` refers to the batch size and `save` refers to the path to which train samples are stored per epoch.
 
 
 ### Model Architecture 
@@ -56,8 +88,5 @@ author={Pranav Jeevan P and Amit Sethi},
 year={2022},
 url={https://openreview.net/forum?id=tBoSm4hUWV}
 }
-
-
-<!-- YET TO CITE LAMA -->
 
 ``` 
