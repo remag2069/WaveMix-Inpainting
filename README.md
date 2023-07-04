@@ -23,7 +23,7 @@ create yaml file with appropriate masking policy following example.yaml and call
 
 run the following command:
 ```
-python3 bin/gen_mask_dataset.py \
+python3 saicinpainting/gen_mask_dataset.py \
 MyData.yaml \
 MyData/test_source/ \
 MyData/test/masked_images/
