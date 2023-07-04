@@ -14,10 +14,10 @@ export TORCH_HOME=$(pwd) && export PYTHONPATH=$(pwd)
 4. create dataset
 
 Download the dataset and divide it into train and test sets, organize the folder as following:
--> WaveMix-Inpainting  
-	-> MyData  
-		-> train  
-		-> test_source  
+> WaveMix-Inpainting  
+	>> MyData  
+		>>> train  
+		>>> test_source  
 
 create yaml file with appropriate masking policy following example.yaml and call it MyData.yaml
 
