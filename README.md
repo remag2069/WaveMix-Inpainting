@@ -20,20 +20,20 @@ Download the dataset and divide it into train and test sets, organize the folder
 		-> train  
 		-> test_source  
 ```
-create yaml file with appropriate masking policy following example.yaml and call it MyData.yaml
+create yaml file with appropriate masking policy following example.yaml and call it MyData.yaml . Additionally change the charecteristics of the mask and image size, for the trainloader in `wavepaint.py` on line 33.
 
 run the following command:
 ```
 python3 saicinpainting/gen_mask_dataset.py \
 MyData.yaml \
 MyData/test_source/ \
-MyData/test/masked_images/
+MyData/test/masked_images/ --ext JPEG
 ```
 
 5. run file
 
 ```
-python3 wavepaint_celebhq.py -batch 16 -save visual_example
+python3 wavepaint.py -batch 16 -save visual_example -train_dir MyData/train
 ```
 where `batch` refers to the batch size and `save` refers to the path to which train samples are stored per epoch.
 
