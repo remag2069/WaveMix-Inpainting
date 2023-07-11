@@ -1,6 +1,6 @@
 # WaveMix-Inpainting
  
-1. Env
+1. Create environment & install dependecies
 ```
 virtualenv inpenv --python=/usr/bin/python3
 source inpenv/bin/activate
@@ -11,7 +11,7 @@ pip install -r requirements.txt
 
 export TORCH_HOME=$(pwd) && export PYTHONPATH=$(pwd)
 ```
-4. create dataset
+2. Dataset arrangment & masking 
 
 Download the dataset and divide it into train and test sets, organize the folder as following:
 ```
@@ -22,7 +22,7 @@ Download the dataset and divide it into train and test sets, organize the folder
 ```
 create yaml file with appropriate masking policy following example.yaml and call it MyData.yaml . Additionally change the charecteristics of the mask and image size, for the trainloader in `wavepaint.py` on line 33.
 
-run the following command:
+run the following command to create the masks:
 ```
 python3 saicinpainting/gen_mask_dataset.py \
 MyData.yaml \
@@ -30,12 +30,12 @@ MyData/test_source/ \
 MyData/test/masked_images/ --ext JPEG
 ```
 
-5. run file
+3. Train
 
 ```
 python3 wavepaint.py -batch 16 -save visual_example -train_dir MyData/train
 ```
-where `batch` refers to the batch size and `save` refers to the path to which train samples are stored per epoch.
+where `batch` refers to the batch size, `save` refers to the path to which train samples are stored per epoch and `train_dir` is the location of the train dataset.
 
 
 ### Model Architecture 
